@@ -11,7 +11,7 @@
 
 Since graduating from university until now, I have always had a desire to write an operating system by myself, so I have been learning Linux and hardware architecture-related things. The X86 hardware is too complicated, so I chose the relatively simple ARMV8 architecture. I hope this project can deepen my understanding of ARMV8 and operating system.
 
-## What is YiOS
+## What_is_YiOS
 
 YiOS is a simple operating system based on ARMv8. It implements basic operating system modules such as SMP, memory management, and process scheduling. I am still improving it. If you like it, please give a star.
 
