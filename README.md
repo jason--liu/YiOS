@@ -47,14 +47,6 @@ make
 cd YiOS
 make debug
 ```
-
-debug YiOS
-
-```
-cd YiOS
-make debug
-```
-
 then,on another terminal
 
 ```
