@@ -20,6 +20,12 @@ YiOS is a simple operating system based on ARMv8. It implements basic operating 
 ### Download and build
 
 ```
+# get toolchain
+wget https://armkeil.blob.core.windows.net/developer/Files/downloads/gnu-a/9.2-2019.12/binrel/gcc-arm-9.2-2019.12-x86_64-aarch64-none-linux-gnu.tar.xz
+tar -xvf gcc-arm-9.2-2019.12-x86_64-aarch64-none-linux-gnu.tar.xz
+sudo mv gcc-arm-9.2-2019.12-x86_64-aarch64-none-linux-gnu/ /opt/
+
+# get code
 git clone https://github.com/jason--liu/YiOS
 cd YiOS
 make 
@@ -28,7 +34,7 @@ make run
 
 ### Debug
 
-prepare:
+Before starting to run YiOS, because Ubuntu20.04's qemu does not support Raspberry Pi 4b, you need to compile qemu separately
 
 YiOS only supports raspberry 4B currently. you can use qemu to monitor that.
 
