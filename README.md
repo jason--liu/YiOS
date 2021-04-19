@@ -4,7 +4,7 @@
 ## Table of Contents
 
 - [Background](#background)
-- [What is YiOS](#What is YiOS)
+- [What_is_YiOS](#What_is_YiOS)
 - [License](#license)
 
 ## Background
