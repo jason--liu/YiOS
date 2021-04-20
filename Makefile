@@ -44,7 +44,7 @@ CFLAGS := -Wall -g -nostdlib -mgeneral-regs-only
 CFLAGS += -I $(shell pwd)/include
 
 AFLAGS := -Wall
-AFLAGS += -g -I $(shell pwd)/include -D__ASSEMBLY__
+AFLAGS += -g -I $(shell pwd)/arch/arm64/include -I $(shell pwd)/include -D__ASSEMBLY__
 
 LDFLAGS := ?
 
