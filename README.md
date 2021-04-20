@@ -4,14 +4,14 @@
 ## Table of Contents
 
 - [Background](#background)
-- [What is YiOS](#What is YiOS)
+- [What_is_YiOS](#What_is_YiOS)
 - [License](#license)
 
 ## Background
 
 Since graduating from university until now, I have always had a desire to write an operating system by myself, so I have been learning Linux and hardware architecture-related things. The X86 hardware is too complicated, so I chose the relatively simple ARMV8 architecture. I hope this project can deepen my understanding of ARMV8 and operating system.
 
-## What is YiOS
+## What_is_YiOS
 
 YiOS is a simple operating system based on ARMv8. It implements basic operating system modules such as SMP, memory management, and process scheduling. I am still improving it. If you like it, please give a star.
 
@@ -28,6 +28,7 @@ sudo mv gcc-arm-9.2-2019.12-x86_64-aarch64-none-linux-gnu/ /opt/
 # get code
 git clone https://github.com/jason--liu/YiOS
 cd YiOS
+export CROSS_COMPILE=/opt/gcc-arm-9.2-2019.12-x86_64-aarch64-none-linux-gnu/bin/aarch64-none-linux-gnu-
 make 
 make run
 ```
@@ -47,14 +48,6 @@ make
 cd YiOS
 make debug
 ```
-
-debug YiOS
-
-```
-cd YiOS
-make debug
-```
-
 then,on another terminal
 
 ```
