@@ -1,7 +1,31 @@
 # SPDX-License-Identifier: GPL-2.0
 MAKEFLAGS += -rR --no-print-directory
 
-CROSS_COMPILE = aarch64-linux-gnu-
+ifeq ("$(origin V)", "command line")
+	  MBUILD_VERBOSE = $(V)
+  endif
+  ifndef MBUILD_VERBOSE
+	  MBUILD_VERBOSE = 0
+  endif
+
+ifeq ($(MBUILD_VERBOSE),1)
+	  quiet =
+	    Q =
+    else
+	  quiet=-s
+	    Q = @
+    endif
+
+ifeq ("$(origin O)", "command line")
+		O_LEVEL = $(O)
+	endif
+	ifndef O_LEVEL
+		O_LEVEL = 2
+	endif
+
+export quiet Q MBUILD_VERBOSE
+
+CROSS_COMPILE ?= aarch64-linux-gnu-
 AS		= $(CROSS_COMPILE)as
 LD		= $(CROSS_COMPILE)ld
 CC		= $(CROSS_COMPILE)gcc
@@ -37,19 +61,25 @@ obj-y += init/
 
 
 all :
-	make -C ./ -f $(TOPDIR)/Makefile.build
-	$(LD) -T $(TOPDIR)/arch/arm64/core/vmyios.lds -Map system.map -o $(TOPDIR)/$(TARGET).elf built-in.o
-	$(OBJCOPY) $(TOPDIR)/$(TARGET).elf -O binary $(TARGET).bin
+	$(Q) make $(quiet) -C ./ -f $(TOPDIR)/Makefile.build
+	$(Q) echo "  LD      $(TARGET).elf"
+	$(Q) $(LD) -T $(TOPDIR)/arch/arm64/core/vmyios.lds -Map system.map -o $(TOPDIR)/$(TARGET).elf built-in.o
+	$(Q) echo "  OBJCOPY $(TARGET).bin"
+	$(Q) $(OBJCOPY) $(TOPDIR)/$(TARGET).elf -O binary $(TARGET).bin
 
 
 clean:
-	rm -f $(shell find -name "*.o")
-	rm -f $(TARGET).*
+	$(Q) echo "  CLEAN   all .o  *.dtb built-in.o"
+	$(Q) echo "  CLEAN   yios.bin yios.elf"
+	$(Q) rm -f $(shell find -name "*.o")
+	$(Q) rm -f $(TARGET).*
 
 distclean:
-	rm -f $(shell find -name "*.o")
-	rm -f $(shell find -name "*.d")
-	rm -f $(TARGET).*
+	$(Q) echo "  CLEAN   all .o .*.d *.dtb built-in.o"
+	$(Q) echo "  CLEAN   yios.bin yios.elf"
+	$(Q) rm -f $(shell find -name "*.o")
+	$(Q) rm -f $(shell find -name "*.d")
+	$(Q) rm -f $(TARGET).*
 
 QEMU_FLAGS  := -machine raspi4
 QEMU_FLAGS  += -nographic

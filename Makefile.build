@@ -27,6 +27,10 @@ ifneq ($(dep_files),)
 endif
 
 
+current_dir = $(shell pwd)
+reverse_top = $(subst /,\/,$(TOPDIR)/)
+relative_dir = $(shell echo $(current_dir) | sed 's/$(reverse_top)//g')
+
 PHONY += $(subdir-y)
 
 
@@ -36,13 +40,15 @@ $(subdir-y):
 	make -C $@ -f $(TOPDIR)/Makefile.build
 
 built-in.o : $(cur_objs) $(subdir_objs)
-	$(LD) -r -o $@ $^
+	 $(LD) -r -o $@ $^
 
 dep_file = .$@.d
 
 %.o : %.c
+	@echo "  CC 	  $(relative_dir)/$@"
 	$(CC) $(CFLAGS) -Wp,-MD,$(dep_file) -c -o $@ $<
 %.o : %.S
+	@echo "  CC 	  $(relative_dir)/$@"
 	$(CC) $(AFLAGS) -Wp,-MD,$(dep_file) -c -o $@ $<
-	
+
 .PHONY : $(PHONY)
