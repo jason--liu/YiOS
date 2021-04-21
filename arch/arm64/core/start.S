@@ -3,8 +3,11 @@
 #include <asm/sysreg.h>
 
 .section  .rodata
-;; .align 3
-.globl el_string1
+/*if MMU is disabled an SCTLR_ELX.A is enabled
+ *then, Data access need 8 bytes aligned
+ */
+.align 3
+.global el_string1
 el_string1:
         .string "Booting at EL"
 boot_string:
