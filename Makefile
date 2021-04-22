@@ -41,12 +41,13 @@ export AS LD CC CPP AR NM
 export STRIP OBJCOPY OBJDUMP
 
 CFLAGS := -Wall -g -nostdlib -mgeneral-regs-only
-CFLAGS += -I $(shell pwd)/include
+CFLAGS += -I $(TOPDIR)/include -I $(TOPDIR)/arch/arm64/include
+CFLAGS += -fno-builtin -Werror-implicit-function-declaration
 
 AFLAGS := -Wall
-AFLAGS += -g -I $(shell pwd)/arch/arm64/include -I $(shell pwd)/include -D__ASSEMBLY__
+AFLAGS += -g -I $(TOPDIR)/arch/arm64/include -I $(TOPDIR)/include -D__ASSEMBLY__
 
-LDFLAGS := ?
+LDFLAGS := --no-undefined
 
 export CFLAGS LDFLAGS AFLAGS
 
@@ -58,12 +59,15 @@ TARGET := yios
 
 obj-y += arch/
 obj-y += init/
+obj-y += lib/
+obj-y += kernel/
+obj-y += drivers/
 
 
 all :
-	$(Q) make $(quiet) -C ./ -f $(TOPDIR)/Makefile.build
+	$(Q) make $(quiet)  -f $(TOPDIR)/scripts/Makefile.build
 	$(Q) echo "  LD      $(TARGET).elf"
-	$(Q) $(LD) -T $(TOPDIR)/arch/arm64/core/vmyios.lds -Map system.map -o $(TOPDIR)/$(TARGET).elf built-in.o
+	$(Q) $(LD) $(LDFLAGS) -T $(TOPDIR)/arch/arm64/lds/vmyios.lds -Map system.map -o $(TOPDIR)/$(TARGET).elf built-in.o
 	$(Q) echo "  OBJCOPY $(TARGET).bin"
 	$(Q) $(OBJCOPY) $(TOPDIR)/$(TARGET).elf -O binary $(TARGET).bin
 
@@ -72,12 +76,14 @@ clean:
 	$(Q) echo "  CLEAN   all .o  *.dtb built-in.o"
 	$(Q) echo "  CLEAN   yios.bin yios.elf"
 	$(Q) rm -f $(shell find -name "*.o")
+	$(Q) rm -f $(shell find -name "*.lds")
 	$(Q) rm -f $(TARGET).*
 
 distclean:
 	$(Q) echo "  CLEAN   all .o .*.d *.dtb built-in.o"
 	$(Q) echo "  CLEAN   yios.bin yios.elf"
 	$(Q) rm -f $(shell find -name "*.o")
+	$(Q) rm -f $(shell find -name "*.lds")
 	$(Q) rm -f $(shell find -name "*.d")
 	$(Q) rm -f $(TARGET).*
 

@@ -22,6 +22,8 @@ cur_objs := $(filter-out %/, $(obj-y))
 dep_files := $(foreach f,$(cur_objs),.$(f).d)
 dep_files := $(wildcard $(dep_files))
 
+lds_obj :=$(filter %.lds, $(cur_objs))
+
 ifneq ($(dep_files),)
   include $(dep_files)
 endif
@@ -34,21 +36,33 @@ relative_dir = $(shell echo $(current_dir) | sed 's/$(reverse_top)//g')
 PHONY += $(subdir-y)
 
 
-__build : $(subdir-y) built-in.o
+__build : $(subdir-y) built-in.o $(lds_obj)
 
 $(subdir-y):
-	make -C $@ -f $(TOPDIR)/Makefile.build
+	make -C $@ -f $(TOPDIR)/scripts/Makefile.build
 
-built-in.o : $(cur_objs) $(subdir_objs)
-	 $(LD) -r -o $@ $^
+tmp_objs := $(cur_objs) $(subdir_objs)
+real_objs := $(filter-out %.lds, $(tmp_objs))
+
+built-in.o :$(real_objs)
+ifeq ($(real_objs),)
+	$(CC) $(CFLAGS) -c -x c /dev/null -o $@
+else
+	$(LD) -r -o $@ $^
+endif
 
 dep_file = .$@.d
 
 %.o : %.c
 	@echo "  CC 	  $(relative_dir)/$@"
 	$(CC) $(CFLAGS) -Wp,-MD,$(dep_file) -c -o $@ $<
+
 %.o : %.S
 	@echo "  CC 	  $(relative_dir)/$@"
 	$(CC) $(AFLAGS) -Wp,-MD,$(dep_file) -c -o $@ $<
+
+%.lds :%.lds.S
+	@echo "  CC 	  $(relative_dir)/$@"
+	$(CC) $(CFLAGS) -E -P -o $@ $<
 
 .PHONY : $(PHONY)
