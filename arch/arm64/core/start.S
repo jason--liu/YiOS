@@ -45,8 +45,8 @@ el1_entry:
         mov     x0, #10
         bl      put_uart
 
-	    adr     x0, bss_begin
-	    adr     x1, bss_end
+	    adr     x0, _bss
+	    adr     x1, _ebss
 	    sub     x2, x1, x0
 	    mov     x1, xzr
 	    bl      memset
