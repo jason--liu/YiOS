@@ -15,7 +15,6 @@ boot_string:
 
 .section ".text.boot"
 
-	    b _start
 
 ENTRY(_start)
 	    /* Disable all interrupts */
