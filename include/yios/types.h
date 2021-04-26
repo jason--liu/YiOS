@@ -49,8 +49,10 @@ enum {
 #define NULL ((void *)0)
 typedef void (*void_func_t)(void);
 
-#define container_of(ptr, name, member) \
-	(name *)((unsigned char *)ptr - ((unsigned char *)&(((name *)0)->member)))
+#define container_of(ptr, type, member) \
+	(type *)((unsigned char *)ptr - offsetof(type, member)
+
+#define offsetof(TYPE, MEMBER) ((size_t) & ((TYPE *)0)->MEMBER)
 
 #define BIT(nr) (1UL << (nr))
 
