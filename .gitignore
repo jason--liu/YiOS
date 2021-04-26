@@ -58,3 +58,5 @@ TAGS
 .cache/
 *.i
 *.lds
+asm-offsets.h
+asm-offsets.s
