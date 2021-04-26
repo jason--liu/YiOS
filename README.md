@@ -13,7 +13,6 @@
    * [License](#license)
 
 
-
 ## Background
 
 Since graduating from university until now, I have always had a desire to write an operating system by myself, so I have been learning Linux and hardware architecture-related things. The X86 hardware is too complicated, so I chose the relatively simple ARMV8 architecture. I hope this project can deepen my understanding of ARMV8 and operating system.
