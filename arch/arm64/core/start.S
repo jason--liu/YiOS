@@ -45,6 +45,10 @@ el1_entry:
         mov     x0, #10
         bl      put_uart
 
+        ldr     x5, =vector_table
+        msr     vbar_el1, x5
+        isb
+
 	    adr     x0, _bss
 	    adr     x1, _ebss
 	    sub     x2, x1, x0

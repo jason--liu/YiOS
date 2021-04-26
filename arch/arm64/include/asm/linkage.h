@@ -1,20 +1,20 @@
 #ifndef __LINKAGE_H_INCLUDE__
 #define __LINKAGE_H_INCLUDE__
 
+#ifdef __ASSEMBLY__
 #ifndef __ALIGN
 #define __ALIGN .align 2
 #endif
 
-#ifdef __ASSEMBLY__
 
 #ifndef LINKER_SCRIPT
-#define ALIGN __ALIGN
+#define _ALIGN __ALIGN
 #endif
 
 #ifndef ENTRY
 #define ENTRY(name)                                                            \
 	.global name;                                                       \
-	ALIGN;                                                              \
+	_ALIGN;                                                              \
     name:
 #endif
 
