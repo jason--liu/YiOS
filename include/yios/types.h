@@ -122,9 +122,23 @@ typedef void (*void_func_t)(void);
 #define GENMASK_ULL(h, l) \
     (((~0ULL) << (l)) & (~0ULL >> (BITS_PER_LONG - 1 - (h))))
 
-#define __AC(X,Y)	(X##Y)
-#define _AC(X,Y)	__AC(X,Y)
-#define _AT(T,X)	((T)(X))
+#ifdef __ASSEMBLY__
+#define _AC(X, Y) X
+#define _AT(T, X) X
+#else
+#define __AC(X, Y) (X##Y)
+#define _AC(X, Y) __AC(X, Y)
+#define _AT(T, X) ((T)(X))
+#endif
+
+#define _UL(x) (_AC(x, UL))
+#define _ULL(x) (_AC(x, ULL))
+
+#define UL(x) (_UL(x))
+#define ULL(x) (_ULL(x))
+
+#define _BITUL(x) (_UL(1) << (x))
+#define _BITULL(x) (_ULL(1) << (x))
 
 #define INT_MAX 	(2147483647)
 #define INT_MIN		(-2147483648)
