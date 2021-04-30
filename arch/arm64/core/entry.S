@@ -87,7 +87,7 @@ ENTRY(vector_table)
 	    ventry el1_error_invalid        // Error EL1t
 
 	    /* Current EL with SPx */
-	    ventry el1_sync                 // Synchronous EL1h
+	    ventry el1_sync_invalid                 // Synchronous EL1h
 	    ventry el1_irq                  // IRQ EL1h
 	    ventry el1_fiq_invalid          // FIQ EL1h
 	    ventry el1_error_invalid        // Error EL1h
@@ -178,11 +178,11 @@ el1_error_invalid:
     invalid BAD_ERROR
 ENDPROC(el1_error_invalid)
 
-// string_t                        :
-// .string "t"
+string_t                        :
+.string "t"
   .global traigger_alignment
 traigger_alignment:
   ldr x0,=0x80002
- // ldr x1,[x0]
-  str wzr,[x0]
+ ldr x1,[x0]
+  //str wzr,[x0]
   ret

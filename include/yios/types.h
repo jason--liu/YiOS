@@ -71,10 +71,6 @@ typedef void (*void_func_t)(void);
 #define SIZE_2M		(2 * 1024 * 1024)
 #define SIZE_8M		(8 * 1024 * 1024)
 
-#define PAGE_SIZE	(SIZE_4K)
-#define PAGE_SHIFT	(12)
-#define PAGE_MASK	(0xfffUL)
-
 #define INVALID_ADDRESS	(0xffffffffffffffff)
 
 #define BITS_PER_BYTE		(8)
