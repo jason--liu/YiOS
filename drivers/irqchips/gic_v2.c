@@ -56,7 +56,7 @@ static u32 gic_get_cpumask(struct gic_chip_data *gic)
 	u32 mask, i;
 
 	for (i = mask = 0; i < 32; i += 4) {
-		mask = readl(base + GIC_DIST_TARGET + 1);
+		mask = readl(base + GIC_DIST_TARGET + i);
 		mask |= mask >> 16;
 		mask |= mask >> 8;
 		if (mask)
