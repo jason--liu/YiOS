@@ -5,6 +5,8 @@
 #include <asm/base.h>
 #include <asm/irq.h>
 #include <asm/timer.h>
+#include <yios/page_alloc.h>
+#include <yios/page.h>
 
 extern unsigned char _text_boot[], _etext_boot[];
 extern unsigned char _text[], _etext[];
@@ -36,11 +38,12 @@ static void print_segment(void)
 void kernel_main(void)
 {
 	uart_init();
-	init_printk_done();
+	/* init_printk_done(); */
 	print_segment();
+	mem_init((unsigned long)_ebss, TOTAL_MEMORY);
 
-    gic_init(0, GIC_V2_DISTRIBUTOR_BASE, GIC_V2_CPU_INTERFACE_BASE);
-    timer_init();
-    raw_local_irq_enable();
+	gic_init(0, GIC_V2_DISTRIBUTOR_BASE, GIC_V2_CPU_INTERFACE_BASE);
+	timer_init();
+	raw_local_irq_enable();
 	return;
 }

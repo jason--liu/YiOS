@@ -68,6 +68,7 @@ obj-y += init/
 obj-y += lib/
 obj-y += kernel/
 obj-y += drivers/
+obj-y += mm/
 
 all : $(offsets_h) YIOS
 
