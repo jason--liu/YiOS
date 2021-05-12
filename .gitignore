@@ -56,7 +56,9 @@ compile_commands.json
 TAGS
 
 .cache/
+.clangd/
 *.i
 *.lds
+tools/extract
 asm-offsets.h
 asm-offsets.s

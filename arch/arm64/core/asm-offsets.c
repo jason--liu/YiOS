@@ -1,6 +1,7 @@
 #include <asm/ptrace.h>
 #include<yios/types.h>
 #include <yios/kbuild.h>
+#include <yios/sched.h>
 
 int main(void)
 {
@@ -29,5 +30,7 @@ int main(void)
         DEFINE(S_SP,    offsetof(struct pt_regs, sp));
         DEFINE(S_PSTATE, offsetof(struct pt_regs, pstate));
         DEFINE(S_PC,     offsetof(struct pt_regs, pc));
+
+        DEFINE(THREAD_CPU_CONTEXT, offsetof(struct task_struct, cpu_context));
         return 0;
 }

@@ -26,7 +26,12 @@ SECTIONS
 
 	. = ALIGN(0x8);
 	_data = .;
-	.data : { *(.data) }
+	.data :
+    {    *(.data)
+         . = ALIGN(4096);
+         init_thread_union = .;
+         KEEP(*(data.init_task))
+    }
 	_edata = .;
 	. = ALIGN(0x8);
 

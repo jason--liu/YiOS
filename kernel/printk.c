@@ -357,6 +357,7 @@ int printk(const char *fmt, ...)
 	len = myprintf(print_buf, sizeof(print_buf), fmt, arg);
 	va_end(arg);
 
+    #if 0
 	/* record it into logbuffer*/
 	if (g_printk_status == PRINTK_STATUS_DOWN) {
 		memcpy(g_record, print_buf, len);
@@ -365,6 +366,7 @@ int printk(const char *fmt, ...)
 
 		return 0;
 	}
+    #endif
 
 	for (i = 0; i < len; i++) {
 		putchar(print_buf[i]);
