@@ -191,17 +191,17 @@ ENTRY(ret_to_user)
 END(ret_to_user)
 
 ENTRY(ret_from_fork)
-  cbz x19, 1f
+  cbz x19, 1f  /* not a kernel thread */
   mov x0, x20
   blr x19
 1:
   b ret_to_user
 ENDPROC(ret_from_fork)
 
- /*
-cpu_switch_to(struct task_struct *prev,
-                struct task_struct *next) ;
-*/
+/*
+ * cpu_switch_to(struct task_struct *prev,
+ *              struct task_struct *next) ;
+ */
 ENTRY(cpu_switch_to)
    add x8, x0,#THREAD_CPU_CONTEXT
    mov x9, sp

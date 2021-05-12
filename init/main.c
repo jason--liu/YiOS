@@ -8,6 +8,7 @@
 #include <yios/page_alloc.h>
 #include <yios/page.h>
 #include <yios/sched.h>
+#include <yios/task.h>
 
 extern unsigned char _text_boot[], _etext_boot[];
 extern unsigned char _text[], _etext[];
@@ -36,12 +37,22 @@ static void print_segment(void)
 	       (unsigned long)(_ebss - _bss));
 }
 
+static void delay(n)
+{
+	while (n--)
+		;
+}
+
 void kernel_thread(void)
 {
-    while(1){
-        printk("%s: %s\n", __FUNCTION__, "12345");
-    }
+	while (1) {
+		delay(10000000);
+		printk("%s: %s\n", __FUNCTION__, "12345");
+	}
 }
+
+register unsigned long current_stack_pointer asm("sp");
+
 void kernel_main(void)
 {
 	uart_init();
@@ -49,17 +60,20 @@ void kernel_main(void)
 	print_segment();
 	mem_init((unsigned long)_ebss, TOTAL_MEMORY);
 
+    printk("0 thread's task_struct address: 0x%lx\n", &init_task_union.task);
+    printk("the SP of 0 thread: 0x%lx\n", current_stack_pointer);
+
 	gic_init(0, GIC_V2_DISTRIBUTOR_BASE, GIC_V2_CPU_INTERFACE_BASE);
 	timer_init();
-	//	raw_local_irq_enable();
+	raw_local_irq_enable();
 
-/* test fork */
-    int pid;
-    pid=do_fork(PF_KTHREAD, (unsigned)&kernel_thread,0);
-    if (pid<0)
-        printk("create kthread failed\n");
-    struct task_struct *next=g_task[pid];
+	/* test fork */
+	int pid;
+	pid = do_fork(PF_KTHREAD, (unsigned long)&kernel_thread, 0);
+	if (pid < 0)
+		printk("create kthread failed\n");
+	struct task_struct *next = g_task[pid];
 
-    switch_to(next);
+	switch_to(next);
 	return;
 }

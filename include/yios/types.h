@@ -96,12 +96,6 @@ typedef void (*void_func_t)(void);
 #define ALIGN(x, y)	((x) & ~__round_mask(x, y))
 #define BALIGN(x, y)	(((x) + (y) - 1) & ~__round_mask(x, y))
 
-#define PAGE_BALIGN(x)	BALIGN(x, PAGE_SIZE)
-#define PAGE_ALIGN(x)	ALIGN(x, PAGE_SIZE)
-
-#define IS_PAGE_ALIGN(x)	(!((unsigned long)(x) & (PAGE_SIZE - 1)))
-#define IS_BLOCK_ALIGN(x)	(!((unsigned long)(x) & (0x1fffff)))
-
 #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]))
 
 #define __IN_RANGE_UNSIGNED(value, base, size) \

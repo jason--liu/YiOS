@@ -1,5 +1,6 @@
 #include <yios/init_task.h>
 #include <yios/sched.h>
+#include <yios/task.h>
 
 const struct task_struct init_task = {
 	.state = 0,

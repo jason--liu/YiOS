@@ -36,8 +36,6 @@ union thread_union {
 	unsigned long stack[THREAD_SIZE / sizeof(long)];
 };
 
-extern struct task_struct *g_task[];
-int do_fork(unsigned long clone_flags, unsigned long fn, unsigned long arg);
 
 extern void ret_from_fork();
 void switch_to(struct task_struct *next);

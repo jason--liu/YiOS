@@ -1,9 +1,9 @@
 #include <yios/sched.h>
 #include <yios/page_alloc.h>
 #include <asm/ptrace.h>
+#include <yios/string.h>
+#include <yios/task.h>
 
-extern void memset(unsigned long start, int i, unsigned long size);
-extern union thread_union init_task_union;
 
 struct task_struct *current = &init_task_union.task;
 
