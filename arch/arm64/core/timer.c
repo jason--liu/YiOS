@@ -35,6 +35,7 @@ static void enable_timer_interrupt(void)
 	writel(CNT_PNS_IRQ, TIMER_CNTRL0);
 	return;
 }
+
 void timer_init(void)
 {
 	generic_timer_init();

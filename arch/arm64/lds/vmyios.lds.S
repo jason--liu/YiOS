@@ -30,6 +30,7 @@ SECTIONS
     {    *(.data)
          . = ALIGN(4096);
          init_thread_union = .;
+         init_stack = .;
          KEEP(*(data.init_task))
     }
 	_edata = .;

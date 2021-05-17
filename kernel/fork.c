@@ -3,13 +3,14 @@
 #include <asm/ptrace.h>
 #include <yios/string.h>
 #include <yios/task.h>
+#include <yios/init_task.h>
 
 
-struct task_struct *current = &init_task_union.task;
+struct task_struct *current = &init_task;
 
 /* global task array to store all task */
 struct task_struct *g_task[NR_TASK] = {
-	&init_task_union.task,
+	&init_task,
 };
 
 static int find_empty_task(void)

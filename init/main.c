@@ -17,6 +17,7 @@ extern unsigned char _data[], _edata[];
 extern unsigned char _bss[], _ebss[];
 
 extern void traigger_alignment();
+/* struct task_struct; */
 static void print_segment(void)
 {
 	printk("YiOS image layout:\n");
@@ -52,6 +53,13 @@ void kernel_thread(void)
 }
 
 register unsigned long current_stack_pointer asm("sp");
+static unsigned long get_sp0(void)
+{
+	unsigned long sp_el0;
+
+	asm("mrs %0, sp_el0" : "=r"(sp_el0));
+	return sp_el0;
+}
 
 void kernel_main(void)
 {
@@ -60,8 +68,7 @@ void kernel_main(void)
 	print_segment();
 	mem_init((unsigned long)_ebss, TOTAL_MEMORY);
 
-    printk("0 thread's task_struct address: 0x%lx\n", &init_task_union.task);
-    printk("the SP of 0 thread: 0x%lx\n", current_stack_pointer);
+	printk("the SP of 0 thread: 0x%lx\n", current_stack_pointer);
 
 	gic_init(0, GIC_V2_DISTRIBUTOR_BASE, GIC_V2_CPU_INTERFACE_BASE);
 	timer_init();
@@ -72,6 +79,7 @@ void kernel_main(void)
 	pid = do_fork(PF_KTHREAD, (unsigned long)&kernel_thread, 0);
 	if (pid < 0)
 		printk("create kthread failed\n");
+
 	struct task_struct *next = g_task[pid];
 
 	switch_to(next);
