@@ -5,8 +5,9 @@
 #include <yios/arm-gic.h>
 #include <asm/timer.h>
 #include <asm/arm_local_reg.h>
+#include <yios/sched.h>
 
-#define HZ 250
+/* #define HZ 250 */
 #define NSEC_PER_SEC 1000000000L
 
 static unsigned int val = NSEC_PER_SEC / HZ;
@@ -48,6 +49,7 @@ void timer_init(void)
 void handle_timer_irq()
 {
 	generic_timer_reset(val);
-	printk("Core0 timer interrupt\n");
+	/* printk("Core0 timer interrupt\n"); */
+    tick_handle_periodic();
     return;
 }

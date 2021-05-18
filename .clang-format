@@ -245,6 +245,7 @@ ForEachMacros:
   - '__for_each_thread'
   - 'for_each_thread'
   - 'for_each_zone'
+  - 'for_each_task'
   - 'for_each_zone_zonelist'
   - 'for_each_zone_zonelist_nodemask'
   - 'fwnode_for_each_available_child_node'

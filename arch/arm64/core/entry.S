@@ -1,5 +1,6 @@
 #include <asm/linkage.h>
 #include <asm/asm-offsets.h>
+#include <asm/assembler.h>
 
 /*
  * Bad Abort numbers
@@ -117,16 +118,28 @@ el1_sync:
 	    eret
 ENDPROC(el1_sync)
 
+tsk .req x28
     .align 6
 el1_irq:
 	    trap_entry
 	    mov     x0, sp
 	    bl      do_irq
-	    trap_exit
+        get_thread_info tsk
+        ldr w24, [tsk, #TI_PREEMPT]
+        cbnz w24, 1f
+        ldr w0, [tsk, #NEED_RESCHED]
+        cbz w0, 1f
+        bl el1_preempt
+1:      trap_exit
 	    eret
 ENDPROC(el1_irq)
 
-    .align 6
+el1_preempt:
+    mov x24,lr
+    bl preempt_schedule_irq
+    ret x24
+
+.align 6
 el0_sync:
 	    trap_entry
 	    mov     x0, sp
@@ -191,6 +204,7 @@ ENTRY(ret_to_user)
 END(ret_to_user)
 
 ENTRY(ret_from_fork)
+    bl schedule_tail /* new thread need to clean up prev thread's garbage*/
     cbz x19, 1f  /* not a kernel thread */
     mov x0, x20
     blr x19

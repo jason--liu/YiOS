@@ -6,8 +6,6 @@
 #include <yios/init_task.h>
 
 
-struct task_struct *current = &init_task;
-
 /* global task array to store all task */
 struct task_struct *g_task[NR_TASK] = {
 	&init_task,
@@ -50,7 +48,7 @@ static int copy_thread(unsigned long clone_flags, struct task_struct *p,
 	p->cpu_context.pc = (unsigned long)ret_from_fork;
 	p->cpu_context.sp = (unsigned long)childregs;
 
-    return 0;
+	return 0;
 }
 
 int do_fork(unsigned long clone_flags, unsigned long fn, unsigned long arg)
@@ -71,21 +69,28 @@ int do_fork(unsigned long clone_flags, unsigned long fn, unsigned long arg)
 
 	p->state = TASK_RUNNING;
 	p->pid = pid;
+	p->count = (current->count + 1) >> 1;
+	current->count >>= 1;
+	p->need_resched = 0;
+	p->preempt_count = 0;
+	p->priority = 2;
 	g_task[pid] = p;
+    SET_LINKS(p);
 
+    wake_up_process(p);
 	return pid;
 
 error:
 	return -1;
 }
 
-void switch_to(struct task_struct *next)
-{
-	struct task_struct *prev = current;
+/* void switch_to(struct task_struct *next) */
+/* { */
+/* 	struct task_struct *prev = current; */
 
-	if (current == next)
-		return;
+/* 	if (current == next) */
+/* 		return; */
 
-	current = next;
-	cpu_switch_to(prev, next);
-}
+/* 	current = next; */
+/* 	cpu_switch_to(prev, next); */
+/* } */

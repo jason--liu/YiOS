@@ -15,7 +15,6 @@ boot_string:
 
 .section ".text.boot"
 
-
 ENTRY(_start)
 	    /* Disable all interrupts */
 	    msr	    daifset, #2
@@ -55,6 +54,8 @@ el1_entry:
 	    mov     x1, xzr
 	    bl      memset
 
+        adr     x5, init_task
+        msr     sp_el0, x5
 	    mov     sp, #LOW_MEMORY
 	    bl      kernel_main
 	    b       slave_hang

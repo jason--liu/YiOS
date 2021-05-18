@@ -7,6 +7,11 @@ struct task_struct init_task = {
 	.priority = 1,
 	.flags = PF_KTHREAD,
 	.pid = 0,
+	.count = DEF_COUNTER,
+	.need_resched = 0,
+	.preempt_count = 0,
+	.next_task = &init_task,
+	.prev_task = &init_task,
 	/* .stack = init_stack, */
 };
 

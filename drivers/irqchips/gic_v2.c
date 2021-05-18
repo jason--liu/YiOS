@@ -124,7 +124,7 @@ void gic_handle_irq(void)
 		irqstat = readl(base + GIC_CPU_INTACK);
 		irqnr = irqstat & GICC_IAR_INT_ID_MASK;
 
-        printk("irqnr=%d\n", irqnr);
+        /* printk("irqnr=%d\n", irqnr); */
 		if (irqnr == GENERIC_TIMER_IRQ)
 			handle_timer_irq();
 
