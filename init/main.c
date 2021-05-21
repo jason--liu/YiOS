@@ -61,17 +61,19 @@ static unsigned long timer_freq(void)
 }
 void kernel_thread1(u64 args)
 {
+	u64 count = 0;
 	while (1) {
 		delay(80000);
-		printk("%s: %s\n", __func__, (char *)args);
+		printk("%s: %s count=%ld\n", __func__, (char *)args, count++);
 	}
 }
 
 void kernel_thread2(u64 args)
 {
+	u64 count = 0;
 	while (1) {
 		delay(50000);
-		printk("%s: %s\n", __func__, (char *)args);
+		printk("%s: %s count=%d\n", __func__, (char *)args, count++);
 	}
 }
 
@@ -81,26 +83,26 @@ void kernel_main(void)
 	/* init_printk_done(); */
 	print_segment();
 	mem_init((unsigned long)_ebss, TOTAL_MEMORY);
-    sched_init();
+	sched_init();
 
-    printk("freq: 0x%lx\n", timer_freq());
+	printk("freq: 0x%lx\n", timer_freq());
 
-    gic_init(0, GIC_V2_DISTRIBUTOR_BASE, GIC_V2_CPU_INTERFACE_BASE);
-    timer_init();
-    raw_local_irq_enable();
+	gic_init(0, GIC_V2_DISTRIBUTOR_BASE, GIC_V2_CPU_INTERFACE_BASE);
+	timer_init();
+	raw_local_irq_enable();
 
-    /* test fork */
-    int pid;
-    pid = do_fork(PF_KTHREAD, (unsigned long)&kernel_thread1,
-		  (unsigned long)"12345");
-    if (pid < 0)
-	    printk("create kthread1 failed\n");
+	/* test fork */
+	int pid;
+	pid = do_fork(PF_KTHREAD, (unsigned long)&kernel_thread1,
+		      (unsigned long)"12345");
+	if (pid < 0)
+		printk("create kthread1 failed\n");
 
-    pid = do_fork(PF_KTHREAD, (unsigned long)&kernel_thread2,
-		  (unsigned long)"abcde");
-    if (pid < 0)
-	    printk("create kthread2 failed\n");
+	pid = do_fork(PF_KTHREAD, (unsigned long)&kernel_thread2,
+		      (unsigned long)"abcde");
+	if (pid < 0)
+		printk("create kthread2 failed\n");
 
-    while (1)
-	    ;
+	while (1)
+		;
 }

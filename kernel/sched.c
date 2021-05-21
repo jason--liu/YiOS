@@ -2,36 +2,37 @@
 #include <yios/types.h>
 #include <asm/irq.h>
 #include <yios/printk.h>
+#include <yios/compiler.h>
 
 struct run_queue g_rq;
 
-struct task_struct *pick_next_task(struct run_queue *rq,
-				   struct task_struct *prev)
+static struct task_struct *pick_next_task(struct run_queue *rq,
+					  struct task_struct *prev)
 {
 	const struct sched_class *class = &simple_sched_class;
 	return class->pick_next_task(rq, prev);
 }
 
-void dequeue_task(struct run_queue *rq, struct task_struct *p)
+static void dequeue_task(struct run_queue *rq, struct task_struct *p)
 {
 	const struct sched_class *class = &simple_sched_class;
 	return class->dequeue_task(rq, p);
 }
 
-void enqueue_task(struct run_queue *rq, struct task_struct *p)
+static void enqueue_task(struct run_queue *rq, struct task_struct *p)
 {
 	const struct sched_class *class = &simple_sched_class;
 	return class->enqueure_task(rq, p);
 }
 
-void task_tick(struct run_queue *rq, struct task_struct *p)
+static void task_tick(struct run_queue *rq, struct task_struct *p)
 {
 	const struct sched_class *class = &simple_sched_class;
 	return class->task_tick(rq, p);
 }
 
-struct task_struct *switch_to(struct task_struct *prev,
-			      struct task_struct *next)
+static struct task_struct *switch_to(struct task_struct *prev,
+				     struct task_struct *next)
 {
 	if (prev == next)
 		return NULL;
@@ -60,6 +61,7 @@ static void schedule_debug(struct task_struct *p)
 static void __schedule(void)
 {
 	struct task_struct *prev, *next, *last;
+	prev = next = last = NULL;
 	struct run_queue *rq = &g_rq;
 
 	prev = current;
@@ -77,9 +79,10 @@ static void __schedule(void)
 		last = switch_to(prev, next);
 		rq->nr_switches++;
 		rq->curr = current;
-
-		schedule_tail(last);
 	}
+
+	if (likely(last))
+		schedule_tail(last);
 }
 
 /* normal schedule */

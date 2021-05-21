@@ -108,8 +108,6 @@ static inline void clear_task_resched(struct task_struct *p)
 extern const struct sched_class simple_sched_class;
 
 extern void ret_from_fork();
-struct task_struct *switch_to(struct task_struct *prev,
-			      struct task_struct *next);
 void wake_up_process(struct task_struct *p);
 void tick_handle_periodic(void);
 extern struct task_struct *cpu_switch_to(struct task_struct *prev,
