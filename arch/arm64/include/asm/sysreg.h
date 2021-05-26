@@ -3,6 +3,8 @@
 
 #define HCR_RW (1 << 31)
 #define HCR_HOST_NVHE_FLAGS (HCR_RW)
+
+#define SCTLR_ELx_M (1 << 0)
 #define SCTLR_EE_LITTLE_ENDIAN (0 << 25)
 #define SCTLR_EOE_LITTLE_ENDIAN (0 << 24)
 #define SCTLR_MMU_DISABLED (0 << 0)

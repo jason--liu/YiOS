@@ -5,16 +5,12 @@
 
 #define PAGE_SHIFT 12
 #define TABLE_SHIFT 9
-#define SECTION_SHIFT (PAGE_SHIFT + TABLE_SHIFT)
 
 #define PAGE_SIZE (1 << PAGE_SHIFT)
 #define PAGE_MASK (~(PAGE_SIZE - 1))
 
-#define SECTION_SIZE (1 << SECTION_SHIFT)
 
-#define TOTAL_MEMORY (SIZE_1G)
 
-#define NR_PAGES (TOTAL_MEMORY / PAGE_SIZE)
 
 #define PAGE_ALIGN(x) ALIGN(x, PAGE_SIZE)
 /* to align the pointer to the (next) page boundary */

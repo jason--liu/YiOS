@@ -17,6 +17,7 @@ SECTIONS
 	}
 	_etext = .;
 
+    . = ALIGN(4096);
 	_rodata = .;
 	.rodata :
 	{
@@ -32,6 +33,9 @@ SECTIONS
          init_thread_union = .;
          init_stack = .;
          KEEP(*(data.init_task))
+        . = ALIGN(4096);
+        idmap_pg_dir = .;
+        . += 4096;
     }
 	_edata = .;
 	. = ALIGN(0x8);

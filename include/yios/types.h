@@ -2,9 +2,8 @@
 #define _YIOS_TYPES_H_
 
 #include <asm/asm_types.h>
-//#include <asm/barrier.h>
-//#include <config/config.h>
 
+#ifndef __ASSEMBLY__
 typedef __u32	u32;
 typedef __s32	s32;
 typedef __u16	u16;
@@ -31,6 +30,7 @@ typedef unsigned long uintptr_t;
 
 typedef int bool;
 
+#endif
 enum {
 	false = 0,
 	true  = 1,

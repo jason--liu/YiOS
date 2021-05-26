@@ -9,6 +9,8 @@
 #include <yios/page.h>
 #include <yios/sched.h>
 #include <yios/task.h>
+#include <yios/config.h>
+#include <asm/mmu.h>
 
 extern unsigned char _text_boot[], _etext_boot[];
 extern unsigned char _text[], _etext[];
@@ -77,6 +79,42 @@ void kernel_thread2(u64 args)
 	}
 }
 
+static int test_access_map_address(void)
+{
+	unsigned long address = TOTAL_MEMORY - 4096;
+
+	*(unsigned long *)address = 0x55;
+
+	printk("%s access 0x%x done\n", __func__, address);
+
+	return 0;
+}
+
+/*
+ * 访问一个没有建立映射的地址
+ * 应该会触发一级页表访问错误。
+ *
+ * Translation fault, level 1
+ *
+ * 见armv8.6手册第2995页
+ */
+static int test_access_unmap_address(void)
+{
+	unsigned long address = TOTAL_MEMORY + 4096;
+
+	*(unsigned long *)address = 0x55;
+
+	printk("%s access 0x%x done\n", __func__, address);
+
+	return 0;
+}
+
+static void test_mmu(void)
+{
+	test_access_map_address();
+	test_access_unmap_address();
+}
+
 void kernel_main(void)
 {
 	uart_init();
@@ -91,6 +129,7 @@ void kernel_main(void)
 	timer_init();
 	raw_local_irq_enable();
 
+#if 0
 	/* test fork */
 	int pid;
 	pid = do_fork(PF_KTHREAD, (unsigned long)&kernel_thread1,
@@ -102,6 +141,9 @@ void kernel_main(void)
 		      (unsigned long)"abcde");
 	if (pid < 0)
 		printk("create kthread2 failed\n");
+#endif
+	paging_init();
+    test_mmu();
 
 	while (1)
 		;

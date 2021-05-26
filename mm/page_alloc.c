@@ -1,5 +1,6 @@
 #include <yios/printk.h>
 #include <yios/page.h>
+#include <yios/config.h>
 #include <yios/mm.h>
 
 static unsigned short mem_map[NR_PAGES] = { 0 };

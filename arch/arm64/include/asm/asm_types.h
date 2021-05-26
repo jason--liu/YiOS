@@ -1,6 +1,7 @@
 #ifndef _YIOS_AARCH64_TYPES_H_
 #define _YIOS_AARCH64_TYPES_H_
 
+#ifndef __ASSEMBLY__
 typedef unsigned long		__u64;
 typedef unsigned int		__u32;
 typedef unsigned short		__u16;
@@ -9,5 +10,6 @@ typedef signed long		__s64;
 typedef signed int		__s32;
 typedef signed short		__s16;
 typedef signed char		__s8;
+#endif
 
 #endif

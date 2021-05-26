@@ -1,0 +1,11 @@
+#ifndef _YIOS_CONFIG_H_
+#define _YIOS_CONFIG_H_
+
+#define CONFIG_ARM64_VA_BITS 48
+#define VA_BITS (CONFIG_ARM64_VA_BITS)
+
+#define TOTAL_MEMORY (0x100000 * 512)
+
+#define NR_PAGES (TOTAL_MEMORY / 4096)
+
+#endif
