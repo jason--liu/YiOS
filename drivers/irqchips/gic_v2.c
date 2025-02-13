@@ -149,6 +149,7 @@ int gic_init(int chip, u64 dist_base, u64 cpu_base)
 	if (gic_irqs > 1020)
 		gic_irqs = 1020;
 
+	gic->gic_irqs =	gic_irqs;
 	printk("%s: cpu_base:0x%0x, dist_base:0x%0x, gic_irqs:%d\n",
 	       __FUNCTION__, cpu_base, dist_base, gic->gic_irqs);
 

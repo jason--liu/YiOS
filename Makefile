@@ -48,7 +48,7 @@ OBJDUMP		= $(CROSS_COMPILE)objdump
 export AS LD CC CPP AR NM
 export STRIP OBJCOPY OBJDUMP
 
-CFLAGS := -Wall -g -nostdlib -mgeneral-regs-only
+CFLAGS := -Wall -g -nostdlib -mgeneral-regs-only -nostdinc
 CFLAGS += -I $(TOPDIR)/include -I $(TOPDIR)/arch/arm64/include
 CFLAGS += -fno-builtin -Werror-implicit-function-declaration -std=gnu89
 
@@ -132,10 +132,11 @@ $(offsets_s): $(offsets_c)
 $(offsets_h): $(offsets_s)
 	$(Q) $(call cmd_offsets,__ASM_OFFSETS_H__)
 
-QEMU_FLAGS  := -machine raspi4
+QEMU_FLAGS  := -machine raspi4b
 QEMU_FLAGS  += -nographic
 
+QEMU_PATH = /work/github/qemu-9.1.0/build/
 run:
-	$(Q) /work/github/qemu/aarch64-softmmu/qemu-system-aarch64 $(QEMU_FLAGS) -kernel $(TARGET).bin
+	$(Q) $(QEMU_PATH)qemu-system-aarch64 $(QEMU_FLAGS) -kernel $(TARGET).bin
 debug:
-	$(Q) /work/github/qemu/aarch64-softmmu/qemu-system-aarch64 $(QEMU_FLAGS) -kernel $(TARGET).bin -S -s
+	$(Q) $(QEMU_PATH)qemu-system-aarch64 $(QEMU_FLAGS) -kernel $(TARGET).bin -S -gdb tcp::3333

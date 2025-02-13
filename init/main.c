@@ -123,7 +123,7 @@ void kernel_main(void)
 	mem_init((unsigned long)_ebss, TOTAL_MEMORY);
 	sched_init();
 
-	printk("freq: 0x%lx\n", timer_freq());
+	printk("freq: %llu\n", timer_freq());
 
 	gic_init(0, GIC_V2_DISTRIBUTOR_BASE, GIC_V2_CPU_INTERFACE_BASE);
 	timer_init();
@@ -143,7 +143,9 @@ void kernel_main(void)
 		printk("create kthread2 failed\n");
 #endif
 	paging_init();
-    test_mmu();
+	/* test_mmu(); */
+	extern void dump_pgtable();
+	/* dump_pgtable(); */
 
 	while (1)
 		;

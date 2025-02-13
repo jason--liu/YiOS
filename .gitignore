@@ -62,3 +62,4 @@ TAGS
 tools/extract
 asm-offsets.h
 asm-offsets.s
+.tags

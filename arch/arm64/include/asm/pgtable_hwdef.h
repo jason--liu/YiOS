@@ -1,6 +1,7 @@
 #ifndef _YIOS_PGTABLE_HWDEF_H_
 #define _YIOS_PGTABLE_HWDEF_H_
 
+#include <yios/page.h>
 /* PGD */
 #define PGDIR_SHIFT 39
 #define PGDIR_SIZE (1UL << PGDIR_SHIFT)

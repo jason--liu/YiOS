@@ -17,7 +17,7 @@
 #define NO_CONT_MAPPINGS BIT(1)
 
 extern char idmap_pg_dir[];
-extern char _text_boot, etext[];
+extern char _text_boot[], etext[];
 extern char _text[], _etext[];
 
 static u64 early_pgtable_alloc(void)
